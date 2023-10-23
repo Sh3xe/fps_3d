@@ -16,6 +16,17 @@ add_subdirectory(dependencies/GLAD)
 add_subdirectory(dependencies/STB_IMAGE)
 
 # PROJECT SETUP
-target_link_libraries(fps_gl PUBLIC glad stb_image glm::glm SDL2 ${OPENGL_LIBRARIES})
-target_include_directories(fps_gl PUBLIC ${SDL2_INCLUDE_DIRS})
+target_link_libraries(fps_gl PUBLIC
+	glad
+	stb_image
+	glm::glm
+	SDL2
+	${OPENGL_LIBRARIES}
+)
+
+target_include_directories(fps_gl PUBLIC
+	${SDL2_INCLUDE_DIRS}
+	source
+)
+
 target_compile_features(fps_gl PUBLIC cxx_std_17)
