@@ -23,8 +23,8 @@ CubemapTexture::CubemapTexture(
 	CubemapTexture({right, left, top, bottom, front, back}) {
 } 
 
-bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &paths ) {
-
+bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &paths )
+{
 	assert( paths.size() == 6 );
 
 	m_valid = true;
@@ -65,18 +65,19 @@ bool CubemapTexture::load_from_file( const std::string &right,
 	const std::string &top,
 	const std::string &bottom,
 	const std::string &front,
-	const std::string &back
-) {
+	const std::string &back )
+{
 	return load_from_file( {right, left, top, bottom, front, back} );
 }
 
-void CubemapTexture::bind() const {
-	if( !m_valid )
-		throw std::runtime_error("Tentative de liaison d'une texture invalide.");
-	else
-		glBindTexture( GL_TEXTURE_CUBE_MAP, m_id );
+void CubemapTexture::bind() const
+{
+	assert(m_valid);
+	glBindTexture( GL_TEXTURE_CUBE_MAP, m_id );
 }
 
-void CubemapTexture::unbind() const {
+void CubemapTexture::unbind() const
+{
+	assert(m_valid);
 	glBindTexture( GL_TEXTURE_CUBE_MAP, 0);
 }

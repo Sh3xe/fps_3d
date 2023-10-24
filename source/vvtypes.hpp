@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/logger.hpp"
+
 #include <cassert>
 #include <cstdint>
 #include <optional>

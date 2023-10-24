@@ -5,11 +5,11 @@
 
 struct Settings
 {
-	int width = 1920;
-	int height = 1080;
+	uint32_t width = 1920;
+	uint32_t height = 1080;
 	bool fps_cap = true;
 	bool fullscreen = false;
-	int fps = 30;
+	uint32_t fps = 30;
 	float sensitivity = 0.05f;
 	std::string title = "FPS_Data";
 };

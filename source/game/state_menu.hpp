@@ -1,6 +1,7 @@
 #pragma once
 
 #include "state_base.hpp"
+#include "graphics/model.hpp"
 
 class MenuState: public State 
 {
@@ -12,5 +13,6 @@ public:
 	void on_shutdown();
 	
 private:
+	Model m_model;
 	int m_id;
 };

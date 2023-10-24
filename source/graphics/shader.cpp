@@ -61,6 +61,7 @@ Shader::~Shader()
 
 void Shader::bind()
 {
+	assert(m_valid);
 	glUseProgram(m_id);
 }
 
@@ -71,31 +72,37 @@ void Shader::unbind()
 
 void Shader::set_int(const std::string& name, int value)
 {
+	assert(m_valid);
 	glUniform1i(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 void Shader::set_float(const std::string& name, float value)
 {
+	assert(m_valid);
 	glUniform1f(glGetUniformLocation(m_id, name.c_str()), value);
 }
 
 void Shader::set_vec2(const std::string& name, float x, float y)
 {
+	assert(m_valid);
 	glUniform2f(glGetUniformLocation(m_id, name.c_str()), x, y);
 }
 
 void Shader::set_vec3(const std::string& name, float x, float y, float z)
 {
+	assert(m_valid);
 	glUniform3f(glGetUniformLocation(m_id, name.c_str()), x, y, z);
 }
 
 void Shader::set_vec4(const std::string& name, float x, float y, float z, float w)
 {
+	assert(m_valid);
 	glUniform4f(glGetUniformLocation(m_id, name.c_str()), x, y, z, w);
 }
 
-void Shader::set_mat4(const std::string& name, float* matrix)
+void Shader::set_mat4(const std::string& name, float *matrix)
 {
+	assert(m_valid);
 	glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, matrix);
 }
 

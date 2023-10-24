@@ -12,19 +12,19 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 	int res = SDL_Init( SDL_INIT_EVERYTHING );
 	if( res != 0 )
 	{
-		VV_ERROR("Cannot initialise SDL:\n", SDL_GetError());
+		VV_ERROR("Cannot initialize SDL:\n", SDL_GetError());
 		return false;
 	}
 
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 3);
-	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
+	SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 5);
 	SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
 	m_window = SDL_CreateWindow(
-		"Game",
+		"FPS Data",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
 		width,
@@ -36,7 +36,7 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 
 	if(!gladLoadGLLoader( (GLADloadproc)SDL_GL_GetProcAddress ))
 	{
-		VV_ERROR("impossible de charger glad");
+		VV_ERROR("Cannot load GLAD (OpenGL)");
 		return false;
 	}
 
@@ -46,7 +46,7 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 
 	is_graphics_initialized = true;
 
-	VV_DEBUG("initialized graphics");
+	VV_DEBUG("Initialized graphics");
 
 	return true;
 }

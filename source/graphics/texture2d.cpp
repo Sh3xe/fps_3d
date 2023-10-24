@@ -6,15 +6,16 @@
 #include "stb_image.h"
 #include "core/logger.hpp"
 
-bool Texture2D::load_from_file( const std::string &path ) {
-
+bool Texture2D::load_from_file( const std::string &path )
+{
 	int32_t w, h, channels;
 	// TODO: régler le problème de chemin
 	uint8_t* image_data = stbi_load( (std::string{"../"} + path).c_str(), &w, &h, &channels, 0);
 
 	m_valid = true;
 
-	if (image_data) {
+	if (image_data)
+	{
 		bind();
 
 		//TODO: add functions for this
@@ -31,7 +32,8 @@ bool Texture2D::load_from_file( const std::string &path ) {
 		glGenerateMipmap(GL_TEXTURE_2D);
 		m_valid = true;
 	}
-	else {
+	else
+	{
 		m_valid = false;
 		VV_ERROR("Can't open texture ", (std::string{"../"} + path));
 	}
@@ -42,15 +44,15 @@ bool Texture2D::load_from_file( const std::string &path ) {
 	return m_valid;
 }
 
-void Texture2D::bind() const{
-
-	if( !m_valid )
-		throw std::runtime_error("Tentative de liaison d'une texture invalide.");
-	else
-		glBindTexture( GL_TEXTURE_2D, m_id );
+void Texture2D::bind() const
+{
+	assert(m_valid);
+	glBindTexture( GL_TEXTURE_2D, m_id );
 
 }
 
-void Texture2D::unbind() const{
+void Texture2D::unbind() const
+{
+	assert(m_valid);
 	glBindTexture( GL_TEXTURE_2D, 0 );
 }

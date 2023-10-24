@@ -3,6 +3,7 @@
 #include "vvtypes.hpp"
 #include "core/settings.hpp"
 #include "graphics/window.hpp"
+//#include "graphics/renderer.hpp"
 
 class State;
 
@@ -29,4 +30,5 @@ private:
 	bool m_state_require_init = false;
 	Settings m_settings;
 	Window m_window;
+	// Renderer m_renderer;
 };

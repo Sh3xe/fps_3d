@@ -15,6 +15,7 @@ public:
 	Shader(const Shader&) = delete;
 	Shader &operator=(const Shader&) = delete;
 
+	// TODO: add load_from_file for consistency
 
 	// TODO: put these functions in private && use [friend class Renderer;]
 	void bind();

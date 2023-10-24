@@ -1,16 +1,25 @@
 #include "application.hpp"
 #include "core/logger.hpp"
 #include "game/state_base.hpp"
+#include "core/timer.hpp"
+#include "graphics/gldebug.hpp"
 
 #include <chrono>
 #include <thread>
 
+using float_second = std::chrono::duration<float, std::ratio<1,1>>;
 
 Application::Application( const Settings &settings ):
 	m_window(settings.width, settings.height, settings.fullscreen),
 	m_settings(settings)
 {
 	m_valid = static_cast<bool>(m_window);
+
+	if(settings.fps == 0)
+	{
+		m_settings.fps = 30;
+		VV_WARN("settings.fps = 0; Setting fps to 30");
+	}
 }
 
 Application::~Application()
@@ -29,23 +38,40 @@ Application::~Application()
 
 void Application::run()
 {
-	if( m_current_state == nullptr )
-	{
-		VV_WARN("Application started with no state attached");
-	}
-
-	float s_dt = 0.01f;
+	// variables for delta time calculation
+	// should not be 0 because this value will be used the first frame as the actual delta time
+	float dt_second = 0.01f;
+	float target_dt_second = 1.0f / (float)m_settings.fps;
+	auto target_duration = float_second{target_dt_second};
+	auto previous = std::chrono::system_clock().now();
+	auto current = std::chrono::system_clock().now();
 
 	while( !m_window.should_close() )
 	{
+		log_gl_errors();
+		// state initialization
 		if(m_state_require_init)
 			init_pending_state();
 		
+		// delta time calculation
+		previous = std::chrono::system_clock().now();
+
+		// game update
 		m_window.get_input().get_key(SDL_SCANCODE_A);
 		m_window.poll_events();
-		m_current_state->on_update(s_dt);
+		m_current_state->on_update(dt_second);
 
-		std::this_thread::sleep_for( std::chrono::milliseconds(250) );
+		// delta time calculation
+		current = std::chrono::system_clock().now();
+		auto delta_time = current - previous;
+		dt_second = float_second{delta_time}.count();
+
+		// fps limitation
+		if( delta_time < target_duration )
+		{
+			std::this_thread::sleep_for( target_duration - delta_time );
+			dt_second = target_dt_second;
+		}
 	}
 }
 

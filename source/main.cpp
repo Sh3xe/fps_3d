@@ -4,7 +4,7 @@
 
 int main()
 {
-	//Settings settings = load_settings_from_file("config/settings.txt").value_or( Settings() );
+	// Settings settings = load_settings_from_file("config/settings.txt").value_or( Settings() );
 
 	Settings settings {};
 

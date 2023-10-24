@@ -11,6 +11,7 @@ add_executable( ${PROJECT_NAME} ${SOURCE_FILES} ${HEADER_FILES})
 find_package( OpenGL REQUIRED )
 find_package( SDL2 REQUIRED )
 find_package( glm REQUIRED )
+find_package( assimp REQUIRED )
 
 add_subdirectory(dependencies/GLAD)
 add_subdirectory(dependencies/STB_IMAGE)
@@ -21,6 +22,7 @@ target_link_libraries(fps_gl PUBLIC
 	stb_image
 	glm::glm
 	SDL2
+	assimp
 	${OPENGL_LIBRARIES}
 )
 
