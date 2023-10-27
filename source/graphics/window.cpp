@@ -1,5 +1,6 @@
 #include "window.hpp"
 #include "core/logger.hpp"
+#include <stb_image.h>
 #include <glad/glad.h>
 
 static bool is_graphics_initialized = false;
@@ -40,14 +41,13 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 		return false;
 	}
 
-	glClearColor(0.0f, 0.6f, 1.0f, 1.0f);
+	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
 	glEnable(GL_DEPTH_TEST);
 	glViewport(0, 0, width, height );
 
 	is_graphics_initialized = true;
-
 	VV_DEBUG("Initialized graphics");
-
+	stbi_set_flip_vertically_on_load(true);
 	return true;
 }
 
@@ -95,4 +95,9 @@ void Window::make_context_current()
 void Window::resize( uint32_t width, uint32_t height )
 {
 	glViewport(0, 0, width, height );
+}
+
+void Window::swap_buffers()
+{
+	SDL_GL_SwapWindow(m_window);
 }

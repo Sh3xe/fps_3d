@@ -46,6 +46,8 @@ bool Shader::load_from_file(const std::string &vs_path, const std::string &fs_pa
 		return false;
 	}
 
+	m_id = shader_id;
+
 	return true;
 }
 
@@ -108,7 +110,7 @@ void Shader::set_mat4(const std::string& name, float *matrix)
 
 Opt<uint32_t> Shader::compile_shader(const std::string& path, uint32_t type)
 {
-	Opt<std::string> source = vv::get_file_content( std::string{"../resources"} + path );
+	Opt<std::string> source = vv::get_file_content( std::string{"../"} + path );
 
 	if( !source )
 	{
@@ -131,5 +133,6 @@ Opt<uint32_t> Shader::compile_shader(const std::string& path, uint32_t type)
 		return {};
 	}
 
+	log_gl_errors();
 	return shader;
 }

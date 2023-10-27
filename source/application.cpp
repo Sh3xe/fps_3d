@@ -48,7 +48,7 @@ void Application::run()
 
 	while( !m_window.should_close() )
 	{
-		log_gl_errors();
+		//log_gl_errors();
 		// state initialization
 		if(m_state_require_init)
 			init_pending_state();
@@ -57,7 +57,6 @@ void Application::run()
 		previous = std::chrono::system_clock().now();
 
 		// game update
-		m_window.get_input().get_key(SDL_SCANCODE_A);
 		m_window.poll_events();
 		m_current_state->on_update(dt_second);
 
@@ -67,7 +66,7 @@ void Application::run()
 		dt_second = float_second{delta_time}.count();
 
 		// fps limitation
-		if( delta_time < target_duration )
+		if( m_settings.fps_cap && delta_time < target_duration )
 		{
 			std::this_thread::sleep_for( target_duration - delta_time );
 			dt_second = target_dt_second;

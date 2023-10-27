@@ -3,7 +3,8 @@
 #include <glad/glad.h>
 #include <stdexcept>
 
-#include "stb_image.h"
+#include "graphics/gldebug.hpp"
+#include <stb_image.h>
 #include "core/logger.hpp"
 
 bool Texture2D::load_from_file( const std::string &path )
@@ -11,7 +12,7 @@ bool Texture2D::load_from_file( const std::string &path )
 	int32_t w, h, channels;
 	// TODO: régler le problème de chemin
 	uint8_t* image_data = stbi_load( (std::string{"../"} + path).c_str(), &w, &h, &channels, 0);
-
+	
 	m_valid = true;
 
 	if (image_data)
@@ -40,7 +41,7 @@ bool Texture2D::load_from_file( const std::string &path )
 
 	stbi_image_free(image_data);
 	unbind();
-
+	log_gl_errors();
 	return m_valid;
 }
 
@@ -48,7 +49,6 @@ void Texture2D::bind() const
 {
 	assert(m_valid);
 	glBindTexture( GL_TEXTURE_2D, m_id );
-
 }
 
 void Texture2D::unbind() const

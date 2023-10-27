@@ -8,6 +8,9 @@ int main()
 
 	Settings settings {};
 
+	settings.fps = 45;
+	settings.fps_cap = true;
+
 	Application app {settings};
 
 	if( !app )

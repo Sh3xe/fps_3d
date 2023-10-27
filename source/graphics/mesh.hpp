@@ -22,7 +22,7 @@ struct Vertex
 class Mesh
 {
 public:
-	friend class Renderer;
+	friend class Renderer3D;
 	friend class Model;
 
 	Mesh(

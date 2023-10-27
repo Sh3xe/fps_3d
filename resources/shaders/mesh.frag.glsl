@@ -1,5 +1,8 @@
 #version 450 core
 
+uniform sampler2D u_diffuse1;
+uniform sampler2D u_specular;
+
 out vec4 color;
 
 in vec3 position;
@@ -10,5 +13,5 @@ in vec2 tex_coords;
 
 void main()
 {
-	color = vec4(1.0, 1.0, 1.0, 1.0);
+	color = texture(u_diffuse1, tex_coords);
 }

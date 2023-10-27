@@ -2,6 +2,8 @@
 
 #include "state_base.hpp"
 #include "graphics/model.hpp"
+#include "graphics/renderer3d.hpp"
+#include "core/camera.hpp"
 
 class MenuState: public State 
 {
@@ -13,6 +15,8 @@ public:
 	void on_shutdown();
 	
 private:
+	Renderer3D m_renderer;
 	Model m_model;
-	int m_id;
+	float m_time {0.0f};
+	Camera m_camera;
 };

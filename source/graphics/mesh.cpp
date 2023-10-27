@@ -1,5 +1,7 @@
 #include "mesh.hpp"
+#include "graphics/gldebug.hpp"
 #include <glad/glad.h>
+#include <assert.h>
 
 Mesh::Mesh(
 	const std::vector<Vertex> &vertices,
@@ -14,6 +16,7 @@ Mesh::Mesh(
 
 Mesh::~Mesh()
 {
+	VV_TRACE("~Mesh");
 	glDeleteVertexArrays(1, &m_vao);
 	glDeleteBuffers(1, &m_ebo);
 	glDeleteBuffers(1, &m_vbo);
@@ -29,6 +32,7 @@ void Mesh::setup()
 	glGenVertexArrays(1, &m_vao);
 	glGenBuffers(1, &m_ebo);
 	glGenBuffers(1, &m_vbo);
+	log_gl_errors();
 
 	glBindVertexArray(m_vao);
 
@@ -44,19 +48,19 @@ void Mesh::setup()
 
 	// position
 	glEnableVertexAttribArray(0);
-	glVertexAttribPointer(0, m_vertices.size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, px));
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, px));
 	// normal
 	glEnableVertexAttribArray(1);
-	glVertexAttribPointer(1, m_vertices.size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
+	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, nx));
 	// tangent
 	glEnableVertexAttribArray(2);
-	glVertexAttribPointer(2, m_vertices.size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tx));
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tx));
 	// bitangent
 	glEnableVertexAttribArray(3);
-	glVertexAttribPointer(3, m_vertices.size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, btx));
+	glVertexAttribPointer(3, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, btx));
 	// texture
 	glEnableVertexAttribArray(4);
-	glVertexAttribPointer(4, m_vertices.size(), GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex));
+	glVertexAttribPointer(4, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, tex));
 
 	glBindVertexArray(0);
 }

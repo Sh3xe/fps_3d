@@ -10,11 +10,12 @@
 
 #include <string>
 #include <map>
+#include <memory>
 
 class Model
 {
 public:
-	friend class Renderer;
+	friend class Renderer3D;
 
 	Model();
 	Model( const std::string &path );
@@ -32,7 +33,7 @@ private:
 	const std::string get_type_as_string(aiTextureType type);
 
 	std::string m_directory;
-	std::vector<Mesh> m_meshes;
+	std::vector<std::unique_ptr<Mesh>> m_meshes;
 	std::map<std::string, NamedTexture> m_loaded_textures;
 	bool m_valid = false;
 };

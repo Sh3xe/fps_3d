@@ -6,7 +6,8 @@
 class Window
 {
 public:
-	friend class Renderer;
+	friend class Renderer3D;
+	friend class Renderer2D;
 
 	Window(uint32_t width, uint32_t height, bool fullscreen);
 	~Window();
@@ -20,6 +21,7 @@ public:
 
 private:
 	void make_context_current();
+	void swap_buffers();
 
 	bool initialize(uint32_t width, uint32_t height, bool fullscreen);
 

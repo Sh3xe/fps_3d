@@ -15,6 +15,7 @@ Model::Model( const std::string &path )
 
 Model::~Model()
 {
+	VV_TRACE("~Mesh");
 }
 
 bool Model::load_from_file(const std::string &path)
@@ -29,12 +30,14 @@ bool Model::load_from_file(const std::string &path)
 	if( !scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode )
 	{
 		VV_ERROR("Cannot load model: ", std::string{"../"} + path);
+		m_valid = false;
 		return false;
 	}
 
 	m_directory = path.substr(0, path.find_last_of('/'));
 	VV_DEBUG("Loading model: ", path, " in directory: ", m_directory);
 	process_node( scene->mRootNode, scene );
+	m_valid = true;
 	return true;
 }
 
@@ -110,7 +113,7 @@ void Model::process_mesh( aiMesh *mesh, const aiScene *scene )
 	{
 		aiFace face = mesh->mFaces[i];
 		for( size_t j = 0; j < face.mNumIndices; ++j )
-			indices.push_back(face.mIndices[i]);
+			indices.push_back(face.mIndices[j]);
 	}
 
 	// materials
@@ -121,7 +124,7 @@ void Model::process_mesh( aiMesh *mesh, const aiScene *scene )
 	textures.insert( textures.end(), diffuse_textures.begin(), diffuse_textures.end());
 	textures.insert( textures.end(), specular_textures.begin(), specular_textures.end());
 
-	m_meshes.emplace_back(vertices, indices, textures);
+	m_meshes.push_back( std::make_unique<Mesh>(vertices, indices, textures) );
 }
 
 std::vector< NamedTexture* > Model::load_material_textures( aiMaterial *material, const aiScene *scene, aiTextureType type )

@@ -3,40 +3,46 @@
 #include "shader.hpp"
 #include "window.hpp"
 #include "cubemap_texture.hpp"
-/*
 #include "mesh.hpp"
 #include "model.hpp"
+#include "core/camera.hpp"
+
+//TODO: UTILISER DES POINTEURS PARTAGEES POUR TOUS LES OBJETS OPENGL!!!!!!!
+
+/*
 #include "animated_model.hpp"
-#include "camera.hpp"
 */
 
 class Renderer3D
 {
 public:
+	Renderer3D(Window &window);
+	~Renderer3D();
+
+	inline operator bool() const { return m_valid; }
+
+	void clear( const Camera &camera );
+	void render( const Model &model );
+	void render( const Mesh &mesh );
+	void finish();
+
 /*
-	void begin_scene();
-	void push(model);
-	void push(mesh); // transform shall be within model
-	void push(animated_model); // animation and time shall be in animated_model
-	void push(grass);
-	void push(water)
-	void render(camera, window);
+	void render(animated_model); // animation and time shall be in animated_model
+	void render(grass);
+	void render(water)
 
 	void set_skybox(skybox_image);
 */
 
 private:
+	Window &m_window;
+	Shader m_mesh_shader;
+	Camera m_camera;
+	bool m_valid = false;
 
 /*
-	std::vector<Model> m_models;
-	std::vector<Mesh> m_meshes;
-	std::vector<AnimatedModel> m_animated_models;
-	std::vector<WaterData> m_water;
-	std::vector<GrassData> m_grass;
-
-	Shader m_model_shader;
 	Shader m_animated_model_shader;
-	Shader m_mesh_shader;
+	Shader m_model_shader;
 	Shader m_skybox_shader;
 	Shader m_grass_shader;
 	Shader m_water_shader;
@@ -48,5 +54,4 @@ private:
 
 	CubemapTexture m_skybox_texture;
 */
-
 };
