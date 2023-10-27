@@ -4,12 +4,7 @@
 
 int main()
 {
-	// Settings settings = load_settings_from_file("config/settings.txt").value_or( Settings() );
-
-	Settings settings {};
-
-	settings.fps = 45;
-	settings.fps_cap = true;
+	Settings settings = load_settings_from_file("resources/config/settings.txt").value_or( Settings() );
 
 	Application app {settings};
 

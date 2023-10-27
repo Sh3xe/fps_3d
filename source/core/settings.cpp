@@ -6,7 +6,10 @@
 Opt<Settings> load_settings_from_file( const std::string &path )
 {
 	Config cfg { path };
-	if( !cfg ) return {};
+	if( !cfg )
+	{
+		VV_ERROR("Cannot load settings at ", path);
+	}
 
 	Settings settings;
 	try
@@ -24,9 +27,18 @@ Opt<Settings> load_settings_from_file( const std::string &path )
 	}
 	catch(const std::exception& e)
 	{
-		VV_DEBUG( e.what() );
 		VV_WARN("Fichier de configuration invalide");
+		VV_DEBUG( e.what() );
 	}
+
+	VV_INFO("Settings:");
+	VV_INFO("FPS=", settings.fps);
+	VV_INFO("FPS_CAP=", settings.fps_cap);
+	VV_INFO("FULLSCREEN=", settings.fullscreen);
+	VV_INFO("WIDTH=", settings.width);
+	VV_INFO("HEIGHT=", settings.height);
+	VV_INFO("SENSITIVITY=", settings.sensitivity);
+	VV_INFO("TITLE=", settings.title);
 
 	return settings;
 }

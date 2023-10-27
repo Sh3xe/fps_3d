@@ -3,7 +3,8 @@
 #include <string>
 #include <map>
 
-class Config {
+class Config
+{
 public:
 	Config( const std::string &path );
 

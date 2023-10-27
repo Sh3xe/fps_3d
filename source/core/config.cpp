@@ -1,10 +1,20 @@
 #include "config.hpp"
 #include "utils.hpp"
+#include "core/logger.hpp"
 
 #include <iostream>
 #include <fstream>
 #include <sstream>
 
+static bool check_stream( std::stringstream &ss, const std::string &type, uint32_t line)
+{
+	if(ss.fail())
+	{
+		VV_WARN("Config loading: invalid type at line ", line, " should be of type ", type);
+		return false;
+	}
+	return true;
+}
 
 Config::Config( const std::string &path )
 {
@@ -13,8 +23,7 @@ Config::Config( const std::string &path )
 
 void Config::parse( const std::string &path )
 {
-
-	std::ifstream file { path };
+	std::ifstream file { "../" + path };
 
 	if(!file)
 	{
@@ -23,14 +32,23 @@ void Config::parse( const std::string &path )
 	}
 
 	std::string line;
+	uint32_t i = 0;
 	while( std::getline(file, line) )
 	{
-
-		if( line.size() < 3 ) continue;
+		++i;
+		if( line.size() < 3 )
+		{
+			VV_WARN("Config loading: line size < 3, skipping line ", i);
+			continue;
+		}
 
 		// getting the index of the equal symbol
 		size_t equ_index = line.find_first_of('=');
-		if( equ_index == std::string::npos ) continue;
+		if( equ_index == std::string::npos )
+		{
+			VV_WARN("Config loading: no '=' sign, skipping line ", i);
+			continue;
+		}
 
 		std::string
 			name = line.substr(2, equ_index - 2),
@@ -50,14 +68,16 @@ void Config::parse( const std::string &path )
 			{
 				int val = 0;
 				ss >> val;
-				m_int_data.emplace(name, val);
+				if(check_stream(ss, "INT", i))
+					m_int_data.emplace(name, val);
 				break;
 			}
 			case 'f':
 			{
 				float val = 0.0f;
 				ss >> val;
-				m_float_data.emplace(name, val);
+				if(check_stream(ss, "FLOAT", i))
+					m_float_data.emplace(name, val);
 				break;
 			}
 			case 's':
@@ -67,6 +87,8 @@ void Config::parse( const std::string &path )
 			}
 			default: break;
 		}
+
+		VV_DEBUG(name, value);
 	}
 }
 

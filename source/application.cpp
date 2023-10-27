@@ -30,10 +30,14 @@ Application::~Application()
 		if(m_state_require_init)
 			m_pending_state->on_create();
 		m_pending_state->on_shutdown();
+		delete m_pending_state;
 	}
 
 	if(m_current_state != nullptr)
+	{
 		m_current_state->on_shutdown();
+		delete m_current_state;
+	}
 }
 
 void Application::run()
@@ -48,7 +52,6 @@ void Application::run()
 
 	while( !m_window.should_close() )
 	{
-		//log_gl_errors();
 		// state initialization
 		if(m_state_require_init)
 			init_pending_state();
@@ -80,7 +83,10 @@ void Application::init_pending_state()
 	assert(m_pending_state != nullptr);
 
 	if( m_current_state != nullptr )
+	{
 		m_current_state->on_shutdown();
+		delete m_current_state;
+	}
 
 	m_current_state = m_pending_state;
 	m_pending_state = nullptr;
@@ -97,6 +103,7 @@ void Application::set_state( State *state )
 		VV_WARN("Two set_state() within one frame");
 		m_pending_state->on_create();
 		m_pending_state->on_shutdown();
+		delete m_pending_state;
 		m_pending_state = nullptr;
 	}
 
