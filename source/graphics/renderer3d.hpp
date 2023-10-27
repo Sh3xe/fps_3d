@@ -36,22 +36,20 @@ public:
 
 private:
 	Window &m_window;
-	Shader m_mesh_shader;
-	Camera m_camera;
-	bool m_valid = false;
 
+	Shader m_mesh_shader;
+	Shader m_skybox_shader;
+
+	CubemapTexture m_skybox_texture;
+	Camera m_camera;
+	glm::mat4 m_mvp;
+	bool m_valid = false;
 /*
 	Shader m_animated_model_shader;
 	Shader m_model_shader;
-	Shader m_skybox_shader;
 	Shader m_grass_shader;
 	Shader m_water_shader;
 	Shader m_postprocess_shader;
-	...
-
 	RenderBuffer m_renderbuffer;
-	...
-
-	CubemapTexture m_skybox_texture;
 */
 };
