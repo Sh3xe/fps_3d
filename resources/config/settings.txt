@@ -1,5 +1,5 @@
 i fps_cap = 1
-i fullscreen = 1
+i fullscreen = 0
 i fps = 30
 i window_width = 1920
 i window_height = 1080

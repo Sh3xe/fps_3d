@@ -54,7 +54,7 @@ void Model::process_mesh( aiMesh *mesh, const aiScene *scene )
 {
 	std::vector<Vertex> vertices;
 	std::vector<uint32_t> indices;
-	std::vector<NamedTexture*> textures;
+	std::vector<Ref<NamedTexture>> textures;
 
 	if( !mesh->HasPositions() || !mesh->HasNormals() )
 	{
@@ -127,9 +127,9 @@ void Model::process_mesh( aiMesh *mesh, const aiScene *scene )
 	m_meshes.push_back( std::make_unique<Mesh>(vertices, indices, textures) );
 }
 
-std::vector< NamedTexture* > Model::load_material_textures( aiMaterial *material, const aiScene *scene, aiTextureType type )
+std::vector<Ref<NamedTexture>> Model::load_material_textures( aiMaterial *material, const aiScene *scene, aiTextureType type )
 {
-	std::vector< NamedTexture* > textures;
+	std::vector<Ref<NamedTexture>> textures;
 	size_t tex_count = material->GetTextureCount(type);
 
 	for(size_t i = 0; i < tex_count; ++i)
@@ -145,17 +145,16 @@ std::vector< NamedTexture* > Model::load_material_textures( aiMaterial *material
 		if( it != m_loaded_textures.end() )
 		{
 			// if the texture is already loaded, just use the loaded one
-			textures.push_back( &(it->second) );
+			textures.push_back( it->second );
 		}
 		else 
 		{
 			// else, load it into memory
-			m_loaded_textures.insert({full_path, NamedTexture()});
+			m_loaded_textures.insert( {full_path, std::make_shared<NamedTexture>()} );
 			auto &tex = m_loaded_textures[full_path];
-			tex.type = get_type_as_string(type);
-			tex.texture.load_from_file(full_path); 
-
-			textures.push_back(&tex);
+			tex->type = get_type_as_string(type);
+			tex->texture.load_from_file(full_path);
+			textures.push_back(tex);
 		}
 	}
 

@@ -6,7 +6,7 @@
 
 #include "vvtypes.hpp"
 #include "mesh.hpp"
-#include "texture2d.hpp"
+#include "api/texture2d.hpp"
 
 #include <string>
 #include <map>
@@ -28,12 +28,12 @@ public:
 private:
 	void process_node( aiNode *node, const aiScene *scene );
 	void process_mesh( aiMesh *mesh, const aiScene *scene );
-	std::vector< NamedTexture* > load_material_textures( aiMaterial *material, const aiScene *, aiTextureType type );
+	std::vector<Ref<NamedTexture>> load_material_textures( aiMaterial *material, const aiScene *, aiTextureType type );
 
 	const std::string get_type_as_string(aiTextureType type);
 
 	std::string m_directory;
-	std::vector<std::unique_ptr<Mesh>> m_meshes;
-	std::map<std::string, NamedTexture> m_loaded_textures;
+	std::vector<Unq<Mesh>> m_meshes;
+	std::map<std::string, Ref<NamedTexture>> m_loaded_textures;
 	bool m_valid = false;
 };

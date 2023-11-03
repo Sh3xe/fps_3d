@@ -1,12 +1,12 @@
 #include "mesh.hpp"
-#include "graphics/gldebug.hpp"
+#include "api/gldebug.hpp"
 #include <glad/glad.h>
 #include <assert.h>
 
 Mesh::Mesh(
 	const std::vector<Vertex> &vertices,
 	const std::vector<uint32_t> &indices,
-	const std::vector<NamedTexture*> textures ):
+	const std::vector<Ref<NamedTexture>> textures ):
 	m_vertices(vertices),
 	m_indices(indices),
 	m_textures(textures)

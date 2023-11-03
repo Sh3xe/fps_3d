@@ -20,7 +20,7 @@ Opt<std::string> get_file_content( const std::string &path )
 
 	if(!file)
 	{
-		VV_WARN("impossible de récuperer le contenu de: ", path, "\n");
+		VV_WARN("cannot get the content of: ", path, "\n");
 		return {};
 	}
 

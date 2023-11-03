@@ -2,6 +2,7 @@
 
 #include "stb_image.h"
 #include "core/logger.hpp"
+#include "gldebug.hpp"
 
 #include <glad/glad.h>
 
@@ -33,12 +34,14 @@ bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &p
 	
 	bind();
 
+	stbi_set_flip_vertically_on_load(false);
+
 	auto it = paths.begin();
 	for( int i = 0; i < paths.size() ; ++i ) {
 		int32_t w, h, nb_channels;
 
 		// TODO: régler le problème de chemin
-		uint8_t *data = stbi_load( (std::string{"../resources/textures/"} + *it).c_str(), &w, &h, &nb_channels, 0);
+		uint8_t *data = stbi_load( (std::string{"../"} + *it).c_str(), &w, &h, &nb_channels, 0);
 		if( data ) {
 			glTexImage2D( GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_RGB, w, h, 0, GL_RGB, GL_UNSIGNED_BYTE, data );
 		}
@@ -51,6 +54,9 @@ bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &p
 		++it;
 	}
 
+	stbi_set_flip_vertically_on_load(true);
+
+
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -58,6 +64,8 @@ bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &p
 	glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 	unbind();
+
+	log_gl_errors();
 
 	return m_valid;
 }

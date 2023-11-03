@@ -3,7 +3,7 @@
 #include <glad/glad.h>
 #include <stdexcept>
 
-#include "graphics/gldebug.hpp"
+#include "gldebug.hpp"
 #include <stb_image.h>
 #include "core/logger.hpp"
 

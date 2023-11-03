@@ -10,7 +10,7 @@ MenuState::MenuState(Application *app):
 void MenuState::on_update( float s_dt )
 {
 	m_time += s_dt;
-	m_camera.position = glm::vec3{cosf(m_time) * 4.0f, 0.0f, sinf(m_time) * 4.0f,};	
+	m_camera.position = glm::vec3{cosf(m_time), 0.0f, sinf(m_time)} * (5.0f + 2.0f*cosf(m_time));	
 	m_renderer.clear(m_camera);
 	m_renderer.render(m_model);
 	m_renderer.finish();
@@ -23,11 +23,26 @@ void MenuState::on_create()
 	{
 		VV_WARN("impossible de charger le modèle");
 	}
+	
+	auto cubemap_ptr = std::make_shared<CubemapTexture>(
+		"resources/textures/cubemap_default/px.jpg",
+		"resources/textures/cubemap_default/nx.jpg",
+		"resources/textures/cubemap_default/py.jpg",
+		"resources/textures/cubemap_default/ny.jpg",
+		"resources/textures/cubemap_default/pz.jpg",
+		"resources/textures/cubemap_default/nz.jpg"
+	);
+
+	if( !(*cubemap_ptr) )
+	{
+		VV_WARN("cannot load cubemap texture");
+	}
+	else 
+	{
+		m_renderer.set_skybox( cubemap_ptr );
+	}
 }
 
 void MenuState::on_shutdown()
 {
-/*
-
-*/
 }

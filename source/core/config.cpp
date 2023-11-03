@@ -88,7 +88,7 @@ void Config::parse( const std::string &path )
 			default: break;
 		}
 
-		VV_DEBUG(name, value);
+		// VV_DEBUG(name, value);
 	}
 }
 

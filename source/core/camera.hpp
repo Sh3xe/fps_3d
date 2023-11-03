@@ -12,4 +12,6 @@ struct Camera
 	float far          { 100.0f };
 
 	glm::mat4 get_mvp() const;
+	glm::mat4 get_view() const;
+	glm::mat4 get_projection() const;
 };

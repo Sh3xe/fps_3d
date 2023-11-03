@@ -3,6 +3,8 @@
 #include "texture.hpp"
 #include <string>
 
+// TODO: change api to use Ref<Texture2D> load_from_file()
+
 class Texture2D: public Texture
 {
 public:
@@ -21,5 +23,4 @@ public:
 
 	void bind() const;
 	void unbind() const;
-
 };

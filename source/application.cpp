@@ -2,7 +2,7 @@
 #include "core/logger.hpp"
 #include "game/state_base.hpp"
 #include "core/timer.hpp"
-#include "graphics/gldebug.hpp"
+#include "graphics/api/gldebug.hpp"
 
 #include <chrono>
 #include <thread>

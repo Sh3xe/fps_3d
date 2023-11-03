@@ -1,7 +1,7 @@
 #pragma once
 
 #include "vvtypes.hpp"
-#include "texture2d.hpp"
+#include "api/texture2d.hpp"
 #include <vector>
 
 struct NamedTexture
@@ -28,7 +28,7 @@ public:
 	Mesh(
 		const std::vector<Vertex> &vertices,
 		const std::vector<uint32_t> &indices,
-		const std::vector<NamedTexture*> m_textures );
+		const std::vector<Ref<NamedTexture>> m_textures );
 
 	~Mesh();
 
@@ -37,6 +37,6 @@ private:
 
 	std::vector<Vertex> m_vertices;
 	std::vector<uint32_t> m_indices;
-	std::vector<NamedTexture*> m_textures;
+	std::vector<Ref<NamedTexture>> m_textures;
 	uint32_t m_vao, m_vbo, m_ebo;
 };

@@ -1,5 +1,5 @@
 #include "renderer3d.hpp"
-#include "gldebug.hpp"
+#include "api/gldebug.hpp"
 #include <glad/glad.h>
 #include <glm/ext.hpp>
 
@@ -19,8 +19,42 @@ void Renderer3D::clear( const Camera &camera )
 {
 	m_window.make_context_current();
 	m_camera = camera;
-	m_mvp = camera.get_mvp();
+	auto view = camera.get_view();
+	auto projection = camera.get_projection();
+	auto skybow_view = glm::mat4(glm::mat3(view));
+	m_mvp = view * projection;
+
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
+
+	// draw skybox
+	if( m_skybox_texture != nullptr )
+	{
+		log_gl_errors();
+		glDepthMask( GL_FALSE );
+
+		m_skybox_shader.bind();
+		m_skybox_model.bind();
+		m_skybox_texture->bind();
+		log_gl_errors();
+		m_skybox_shader.set_mat4("u_view", glm::value_ptr(skybow_view));
+		m_skybox_shader.set_mat4("u_projection", glm::value_ptr(projection));
+		m_skybox_shader.set_int("u_skybox_texture", 0);
+		glActiveTexture(GL_TEXTURE0);
+
+		glDrawArrays(GL_TRIANGLES, 0, 36);
+		log_gl_errors();
+
+		m_skybox_texture->unbind();
+		m_skybox_model.unbind();
+		m_skybox_shader.unbind();
+		log_gl_errors();
+
+		glDepthMask( GL_TRUE );
+	}
+	else 
+	{
+		VV_WARN("No skybox attached to the renderer");
+	}
 }
 
 void Renderer3D::render( const Model &model )
@@ -86,4 +120,9 @@ void Renderer3D::render( const Mesh &mesh )
 void Renderer3D::finish( )
 {
 	m_window.swap_buffers();
+}
+
+void Renderer3D::set_skybox( std::shared_ptr<CubemapTexture> texture )
+{
+	m_skybox_texture = texture;
 }
