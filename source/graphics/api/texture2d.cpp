@@ -28,7 +28,6 @@ bool Texture2D::load_from_file( const std::string &path )
 		uint32_t format = GL_GREEN;
 		if (channels == 3) format = GL_RGB;
 		else if (channels == 4) format = GL_RGBA;
-
 		glTexImage2D(GL_TEXTURE_2D, 0, format, w, h, 0, format, GL_UNSIGNED_BYTE, image_data);
 		glGenerateMipmap(GL_TEXTURE_2D);
 		m_valid = true;

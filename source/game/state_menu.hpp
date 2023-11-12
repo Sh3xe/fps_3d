@@ -4,6 +4,7 @@
 #include "graphics/model.hpp"
 #include "graphics/renderer3d.hpp"
 #include "core/camera.hpp"
+#include "graphics/grass.hpp"
 
 class MenuState: public State 
 {
@@ -16,6 +17,7 @@ public:
 	
 private:
 	Renderer3D m_renderer;
+	GrassVolume m_grass_volume;
 	Model m_model;
 	float m_time {0.0f};
 	Camera m_camera;

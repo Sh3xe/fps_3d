@@ -108,6 +108,12 @@ void Shader::set_mat4(const std::string& name, float *matrix)
 	glUniformMatrix4fv(glGetUniformLocation(m_id, name.c_str()), 1, GL_FALSE, matrix);
 }
 
+void Shader::set_vec3_arr( const std::string& name, float *arr, uint32_t count )
+{
+	assert(m_valid);
+	glUniform3fv(glGetUniformLocation(m_id, name.c_str()), count, arr);
+}
+
 Opt<uint32_t> Shader::compile_shader(const std::string& path, uint32_t type)
 {
 	Opt<std::string> source = vv::get_file_content( std::string{"../"} + path );

@@ -1,12 +1,16 @@
 #pragma once
 
+#include "vvtypes.hpp"
+
+#include "core/camera.hpp"
 #include "api/shader.hpp"
-#include "window.hpp"
 #include "api/cubemap_texture.hpp"
+#include "api/vertex_array.hpp"
+
+#include "window.hpp"
 #include "mesh.hpp"
 #include "model.hpp"
-#include "core/camera.hpp"
-#include "skybox_data.hpp"
+#include "grass.hpp"
 
 //TODO: UTILISER DES POINTEURS PARTAGEES POUR TOUS LES OBJETS OPENGL!!!!!!!
 
@@ -25,8 +29,9 @@ public:
 	void clear( const Camera &camera );
 	void render( const Model &model );
 	void render( const Mesh &mesh );
+	void render( const GrassVolume &grass );
 	void finish();
-	void set_skybox( Ref<CubemapTexture> texture );
+	void set_skybox( const Ref<CubemapTexture> &texture );
 
 /*
 	void render(animated_model); // animation and time shall be in animated_model
@@ -39,17 +44,19 @@ private:
 
 	Shader m_mesh_shader;
 	Shader m_skybox_shader;
+	Shader m_grass_shader;
 
+	// skybox data
 	Ref<CubemapTexture> m_skybox_texture;
-	SkyboxModel m_skybox_model;
-	Camera m_camera;
-	glm::mat4 m_mvp;
-	bool m_valid = false;
+	VertexArray m_skybox_vertices;
 
+    // grass data
+	Camera m_camera;
+	glm::mat4 m_cam_view;
+	glm::mat4 m_cam_proj;
+	bool m_valid = false;
 /*
 	Shader m_animated_model_shader;
-	Shader m_model_shader;
-	Shader m_grass_shader;
 	Shader m_water_shader;
 	Shader m_postprocess_shader;
 	RenderBuffer m_renderbuffer;

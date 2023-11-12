@@ -2,6 +2,7 @@
 
 #include "vvtypes.hpp"
 #include "api/texture2d.hpp"
+// #include "api/vertex_array.hpp"
 #include <vector>
 
 struct NamedTexture
@@ -33,6 +34,18 @@ public:
 	~Mesh();
 
 private:
+	/*
+	static std::vector<LayoutDescription> mesh_description()
+	{
+		return {
+			LayoutDescription{0, 3, offsetof(Vertex, px), sizeof(Vertex),LayoutDataType::FLOAT},
+			LayoutDescription{1, 3, offsetof(Vertex, nx), sizeof(Vertex),LayoutDataType::FLOAT},
+			LayoutDescription{2, 3, offsetof(Vertex, tx), sizeof(Vertex),LayoutDataType::FLOAT},
+			LayoutDescription{3, 3, offsetof(Vertex, btx), sizeof(Vertex),LayoutDataType::FLOAT},
+			LayoutDescription{4, 2, offsetof(Vertex, tex), sizeof(Vertex),LayoutDataType::FLOAT},
+		};
+	} */
+
 	void setup();
 
 	std::vector<Vertex> m_vertices;
