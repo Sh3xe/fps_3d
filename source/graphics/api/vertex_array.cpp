@@ -19,6 +19,23 @@ static GLuint get_opengl_type( const LayoutDataType &type )
 	return 0;
 }
 
+static bool is_integer( const LayoutDataType &type )
+{
+	switch(type)
+	{
+	case LayoutDataType::FLOAT:
+		return false;
+	case LayoutDataType::INT:
+	case LayoutDataType::UINT:
+		return true;
+	default: break;
+	}
+
+	assert(false && "unknown data type");
+	return false;
+} 
+
+
 static uint32_t get_type_size( const LayoutDataType &type )
 {
 	switch(type)
@@ -125,14 +142,28 @@ void VertexArray::add_vertex_buffer( const Ref<VertexBuffer> &vertex_buffer, con
 	{
 		glEnableVertexAttribArray(desc.location);
 		
-		glVertexAttribPointer(
-			desc.location,
-			desc.count,
-			get_opengl_type(desc.type),
-			GL_FALSE,
-			desc.stride,
-			(void*)(desc.offset)
-		);
+		if(is_integer(desc.type))
+		{
+			glVertexAttribIPointer(
+				desc.location,
+				desc.count,
+				get_opengl_type(desc.type),
+				desc.stride,
+				(void*)(desc.offset)
+			);
+		}
+		else 
+		{
+			glVertexAttribPointer(
+				desc.location,
+				desc.count,
+				get_opengl_type(desc.type),
+				GL_FALSE,
+				desc.stride,
+				(void*)(desc.offset)
+			);
+		}
+
 
 		if(desc.per_instance)
 			glVertexAttribDivisor(desc.location, 1);

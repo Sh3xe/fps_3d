@@ -175,7 +175,7 @@ void Renderer3D::render( const GrassVolume &grass )
 
 	glm::vec3 colors[4] = {grass.m_params.bottom_color, grass.m_params.base_color, grass.m_params.top_color, grass.m_params.tip_color};
 
-	m_grass_shader.set_vec3_arr("u_colors[3]", (float*)colors, 4);
+	m_grass_shader.set_vec3_arr("u_colors[4]", (float*)colors, 4);
 
 	grass.m_vertex_array.bind();
 	glDrawElementsInstanced(GL_TRIANGLES, 33, GL_UNSIGNED_INT, 0, grass.m_positions.size());

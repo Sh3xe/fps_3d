@@ -3,7 +3,7 @@
 struct GrassVertex
 {
     float x, y, z;
-    uint32_t color_id;
+    int32_t color_id;
 };
 
 static constexpr GrassVertex grass_vertices[] =
@@ -11,16 +11,16 @@ static constexpr GrassVertex grass_vertices[] =
     GrassVertex{0.000000, 0.000000, 0.145381, 0},
     GrassVertex{-0.002487, 1.707150, -0.000303, 3},
     GrassVertex{0.000000, 0.000000, -0.145381, 0},
-    GrassVertex{-0.000000, 1.568015, 0.027646, 1},
+    GrassVertex{-0.000000, 1.568015, 0.027646, 2},
     GrassVertex{-0.000000, 1.333333, 0.057098, 2},
     GrassVertex{-0.000000, 1.020179, 0.094790, 1},
     GrassVertex{0.000000, 0.707025, 0.111863, 1},
-    GrassVertex{0.000000, 0.333333, 0.128360, 2},
-    GrassVertex{0.000000, 0.333333, -0.128360, 2},
+    GrassVertex{0.000000, 0.333333, 0.128360, 1},
+    GrassVertex{0.000000, 0.333333, -0.128360, 1},
     GrassVertex{0.000000, 0.707025, -0.111863, 1},
     GrassVertex{-0.000000, 1.020179, -0.094790, 1},
     GrassVertex{-0.000000, 1.333333, -0.057098, 2},
-    GrassVertex{-0.000000, 1.568015, -0.027646, 1}
+    GrassVertex{-0.000000, 1.568015, -0.027646, 2}
 };
 
 static constexpr uint32_t grass_indices[] =
@@ -67,8 +67,10 @@ void GrassVolume::setup_positions( const glm::vec3 &position, const glm::vec2 &p
 void GrassVolume::setup_vao()
 {
 	m_vertex_array.set_index_buffer(grass_blade_indices);
-	m_vertex_array.add_vertex_buffer(grass_blade_vertices, {LayoutDescription(0, 3, offsetof(GrassVertex, x), sizeof
-	(GrassVertex), LayoutDataType::FLOAT, false), LayoutDescription(1, 1, offsetof(GrassVertex, color_id), sizeof
-	(GrassVertex), LayoutDataType::UINT, false)});
-	m_vertex_array.add_vertex_buffer( m_position_buffer, {LayoutDescription(2, 3, 0, 3*sizeof(float), LayoutDataType::FLOAT, true)});
+	m_vertex_array.add_vertex_buffer(grass_blade_vertices, {
+        LayoutDescription(0, 3, offsetof(GrassVertex, x), sizeof(GrassVertex), LayoutDataType::FLOAT, false), 
+        LayoutDescription(1, 1, offsetof(GrassVertex, color_id), sizeof(GrassVertex), LayoutDataType::INT, false)});
+	m_vertex_array.add_vertex_buffer( m_position_buffer, {
+        LayoutDescription(2, 3, 0, 3*sizeof(float), LayoutDataType::FLOAT, true)
+    });
 }

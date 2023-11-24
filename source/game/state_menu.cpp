@@ -14,7 +14,7 @@ void MenuState::on_update( float s_dt )
 	m_camera.position = glm::vec3{cosf(m_time), 0.0f, sinf(m_time)} * (5.0f + 2.0f*cosf(m_time));	
 	m_renderer.clear(m_camera);
 	m_renderer.render(m_grass_volume);
-	m_renderer.render(m_model);
+	//m_renderer.render(m_model);
 	m_renderer.finish();
 }
 

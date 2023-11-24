@@ -46,3 +46,30 @@ private:
 };
 
 MouseButton button_from_sdl_enum( uint8_t sdl_enum );
+
+
+/*
+class Input
+{
+public:
+	friend class Window;
+
+	bool is_keyup( const SDL_Scancode &key );
+	uint32_t mouse_x();
+	uint32_t mouse_y();
+	uint32_t mouse_dx();
+	uint32_t mouse_dy();
+
+	void add_click_callback(name, func);
+	void remove_click_callback(name);
+private:
+	void handle_keydown();
+	void handle_keyup();
+	void dispatch_click_event();
+
+	std::map<SDL_Scancode, bool> m_keys;
+	std::map<std::string, Callback> m_callbacks;
+	std::pair<bool, bool> m_click_state;
+	int32_t m_mouse_x = 0.0f, m_mouse_y = 0.0f;
+}
+*/
