@@ -14,4 +14,5 @@ public:
 
 protected:
 	Application *m_app;
+	bool m_should_close = false;
 };

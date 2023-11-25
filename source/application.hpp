@@ -24,6 +24,7 @@ public:
 private:
 	void init_pending_state();
 
+	bool m_running = true;
 	bool m_valid = false;
 	State *m_current_state = nullptr;
 	State *m_pending_state = nullptr;

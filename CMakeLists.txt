@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.22.1)
+cmake_minimum_required(VERSION 3.21.2)
 
 project(fps_gl LANGUAGES CXX )
 
@@ -21,13 +21,13 @@ target_link_libraries(fps_gl PUBLIC
 	glad
 	stb_image
 	glm::glm
-	SDL2
-	assimp
+	$<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
+    $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
+	assimp::assimp
 	${OPENGL_LIBRARIES}
 )
 
 target_include_directories(fps_gl PUBLIC
-	${SDL2_INCLUDE_DIRS}
 	source
 )
 

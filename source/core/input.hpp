@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL.h>
+#include "sdl_include.hpp"
 
 #include "vvtypes.hpp"
 #include <string>

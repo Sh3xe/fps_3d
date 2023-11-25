@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL2/SDL.h>
+#include "sdl_include.hpp"
 #include "core/input.hpp"
 
 class Window
