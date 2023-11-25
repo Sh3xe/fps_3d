@@ -1,4 +1,5 @@
 #include "grass.hpp"
+#include <iostream>
 
 struct GrassVertex
 {
@@ -8,19 +9,33 @@ struct GrassVertex
 
 static constexpr GrassVertex grass_vertices[] =
 {
-    GrassVertex{0.000000, 0.000000, 0.145381, 0},
-    GrassVertex{-0.002487, 1.707150, -0.000303, 3},
-    GrassVertex{0.000000, 0.000000, -0.145381, 0},
-    GrassVertex{-0.000000, 1.568015, 0.027646, 2},
-    GrassVertex{-0.000000, 1.333333, 0.057098, 2},
-    GrassVertex{-0.000000, 1.020179, 0.094790, 1},
-    GrassVertex{0.000000, 0.707025, 0.111863, 1},
-    GrassVertex{0.000000, 0.333333, 0.128360, 1},
-    GrassVertex{0.000000, 0.333333, -0.128360, 1},
-    GrassVertex{0.000000, 0.707025, -0.111863, 1},
-    GrassVertex{-0.000000, 1.020179, -0.094790, 1},
-    GrassVertex{-0.000000, 1.333333, -0.057098, 2},
-    GrassVertex{-0.000000, 1.568015, -0.027646, 2}
+	GrassVertex{ 0, 0,0.0256555, 0 },
+	GrassVertex{ -0.000438882, 0.301262,-5.34706e-05, 3 },
+	GrassVertex{ 0, 0,-0.0256555, 0 },
+	GrassVertex{ -0, 0.276709,0.00487871, 2 },
+	GrassVertex{ -0, 0.235294,0.0100761, 2 },
+	GrassVertex{ -0, 0.180032,0.0167276, 1 },
+	GrassVertex{ 0, 0.124769,0.0197405, 1 },
+	GrassVertex{ 0, 0.0588235,0.0226518, 1 },
+	GrassVertex{ 0, 0.0588235,-0.0226518, 1 },
+	GrassVertex{ 0, 0.124769,-0.0197405, 1 },
+	GrassVertex{ -0, 0.180032,-0.0167276, 1 },
+	GrassVertex{ -0, 0.235294,-0.0100761, 2 },
+	GrassVertex{ -0, 0.276709,-0.00487871, 2 }
+
+    //GrassVertex{0.000000, 0.000000, 0.145381, 0},
+    //GrassVertex{-0.002487, 1.707150, -0.000303, 3},
+    //GrassVertex{0.000000, 0.000000, -0.145381, 0},
+    //GrassVertex{-0.000000, 1.568015, 0.027646, 2},
+    //GrassVertex{-0.000000, 1.333333, 0.057098, 2},
+    //GrassVertex{-0.000000, 1.020179, 0.094790, 1},
+    //GrassVertex{0.000000, 0.707025, 0.111863, 1},
+    //GrassVertex{0.000000, 0.333333, 0.128360, 1},
+    //GrassVertex{0.000000, 0.333333, -0.128360, 1},
+    //GrassVertex{0.000000, 0.707025, -0.111863, 1},
+    //GrassVertex{-0.000000, 1.020179, -0.094790, 1},
+    //GrassVertex{-0.000000, 1.333333, -0.057098, 2},
+    //GrassVertex{-0.000000, 1.568015, -0.027646, 2}
 };
 
 static constexpr uint32_t grass_indices[] =
@@ -44,6 +59,11 @@ GrassVolume::GrassVolume( const glm::vec3 &position, const glm::vec2 &plane_size
         grass_blade_indices = std::make_shared<IndexBuffer>( grass_indices, 33 );
         grass_blade_vertices = std::make_shared<VertexBuffer>( grass_vertices, sizeof(grass_vertices));
     }
+	float fac = 0.3f / 1.70f;
+	for (const auto& g : grass_vertices)
+	{
+		std::cout << "GrassVertex{ " << g.x * fac << ", " << g.y * fac << "," << g.z * fac << ", " << g.color_id << " }\n";
+	}
 
 	setup_positions(position, plane_size);
     setup_vao();

@@ -15,9 +15,10 @@ public:
 
 private:
 	// angle
-	float m_pitch;
-	float m_yaw;
+	float m_pitch = 0.0f;
+	float m_yaw = 0.0f;
+	float m_sensitivity = 0.001f;
 
 	Camera m_camera;
-	glm::vec3 m_base_positon;
+	glm::vec3 m_base_position;
 };

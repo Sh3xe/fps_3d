@@ -48,6 +48,8 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 	is_graphics_initialized = true;
 	VV_DEBUG("Initialized graphics");
 	stbi_set_flip_vertically_on_load(true);
+	// so that the mouse stays inside the window
+	SDL_SetRelativeMouseMode(SDL_TRUE);
 	return true;
 }
 
@@ -66,6 +68,8 @@ Window::~Window()
 
 void Window::poll_events()
 {
+	m_input.m_mouse_dx = 0;
+	m_input.m_mouse_dy = 0;
 	SDL_Event event;
 	while( SDL_PollEvent(&event) )
 	{
@@ -75,12 +79,29 @@ void Window::poll_events()
 			m_should_close = true;
 			break;
 		case SDL_KEYDOWN:
-			//VV_INFO("handle_keydown", event.key.keysym.scancode);
 			m_input.handle_keydown(event.key.keysym.scancode);
 			break;
 		case SDL_KEYUP:
-			//VV_INFO("handle_keyup");
 			m_input.handle_keyup(event.key.keysym.scancode);
+			break;
+		case SDL_MOUSEMOTION:
+			m_input.m_mouse_x = event.motion.x;
+			m_input.m_mouse_y = event.motion.y;
+			m_input.m_mouse_dx += event.motion.xrel;
+			m_input.m_mouse_dy += event.motion.yrel;
+			break;
+		case SDL_MOUSEBUTTONDOWN:
+			m_input.dispatch_click_event(Input::button_from_sdl_enum(event.button.button));
+			if (event.button.button == SDL_BUTTON_LEFT)
+				m_input.m_click_state.first = true;
+			if (event.button.button == SDL_BUTTON_RIGHT)
+				m_input.m_click_state.second = true;
+			break;
+		case SDL_MOUSEBUTTONUP:
+			if (event.button.button == SDL_BUTTON_LEFT)
+				m_input.m_click_state.first = false;
+			if (event.button.button == SDL_BUTTON_RIGHT)
+				m_input.m_click_state.second = false;
 			break;
 		default: break;
 		}

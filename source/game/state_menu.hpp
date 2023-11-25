@@ -5,6 +5,7 @@
 #include "graphics/renderer3d.hpp"
 #include "core/camera.hpp"
 #include "graphics/grass.hpp"
+#include "player_controller.hpp"
 
 class MenuState: public State 
 {
@@ -16,6 +17,7 @@ public:
 	void on_shutdown();
 	
 private:
+	PlayerController m_controller;
 	Renderer3D m_renderer;
 	GrassVolume m_grass_volume;
 	Model m_model;

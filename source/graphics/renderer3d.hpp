@@ -52,8 +52,7 @@ private:
 
     // grass data
 	Camera m_camera;
-	glm::mat4 m_cam_view;
-	glm::mat4 m_cam_proj;
+	glm::mat4 m_mvp;
 	bool m_valid = false;
 /*
 	Shader m_animated_model_shader;

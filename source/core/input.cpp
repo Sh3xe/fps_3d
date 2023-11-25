@@ -1,5 +1,6 @@
 #include "input.hpp"
 
+/*
 void Input::set_mouse_state( bool rc, bool lc )
 {
     m_click_state.first = rc;
@@ -9,16 +10,6 @@ void Input::set_mouse_state( bool rc, bool lc )
 std::pair<bool, bool> Input::get_mouse_state()
 {
     return m_click_state;
-}
-
-void Input::handle_keyup( SDL_Scancode key )
-{
-    m_keys[key] = false;
-}
-
-void Input::handle_keydown( SDL_Scancode key )
-{
-    m_keys[key] = true;
 }
 
 void Input::set_mouse_pos(int32_t x, int32_t y)
@@ -33,9 +24,11 @@ void Input::add_mouse_pos(int32_t x, int32_t y)
     m_mouse_y += y;
 }
 
-void Input::on_click( MouseButton b)
+*/
+
+void Input::dispatch_click_event( MouseButton b )
 {
-    for( auto &[name, fun]: m_callbacks)
+    for( auto &[name, fun]: m_callbacks )
         fun(b);
 }
 
@@ -49,8 +42,17 @@ void Input::remove_click_callback( const std::string &name )
     m_callbacks.erase( name );
 }
 
+void Input::handle_keyup(SDL_Scancode key)
+{
+	m_keys[key] = false;
+}
 
-MouseButton button_from_sdl_enum( uint8_t sdl_enum )
+void Input::handle_keydown(SDL_Scancode key)
+{
+	m_keys[key] = true;
+}
+
+MouseButton Input::button_from_sdl_enum( uint8_t sdl_enum )
 {
     if( sdl_enum == SDL_BUTTON_LEFT )
         return MouseButton::left;
@@ -63,4 +65,13 @@ MouseButton button_from_sdl_enum( uint8_t sdl_enum )
     if( sdl_enum == SDL_BUTTON_X2 )
         return MouseButton::x2;
     return MouseButton::none;
+}
+
+bool Input::is_keyup(const SDL_Scancode& key) const
+{
+	auto it = m_keys.find(key);
+	if (it == m_keys.end())
+		return false;
+	else
+		return it->second;
 }

@@ -26,7 +26,6 @@ public:
 	void set_vec3( const std::string& name, float x, float y, float z);
 	void set_vec4( const std::string& name, float x, float y, float z, float w);
 	void set_mat4( const std::string& name, float* matrix );
-	void set_vec3_arr( const std::string& name, float *arr, uint32_t count );
 
 private:
 	bool load_from_file(const std::string &vs_path, const std::string &fs_path);

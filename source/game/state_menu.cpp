@@ -7,11 +7,14 @@ MenuState::MenuState(Application *app):
 	State(app)
 {
 }
-
+   
 void MenuState::on_update( float s_dt )
 {
-	m_time += s_dt;
-	m_camera.position = glm::vec3{cosf(m_time), 0.0f, sinf(m_time)} * (5.0f + 2.0f*cosf(m_time));	
+	// controller
+	m_controller.update(m_app->window().get_input(), s_dt);
+	m_camera = m_controller.get_cam();
+
+	// drawing
 	m_renderer.clear(m_camera);
 	m_renderer.render(m_grass_volume);
 	//m_renderer.render(m_model);
@@ -20,11 +23,11 @@ void MenuState::on_update( float s_dt )
 
 void MenuState::on_create()
 {
-	m_model.load_from_file("resources/models/backpack/backpack.obj");
+	/*m_model.load_from_file("resources/models/backpack/backpack.obj");
 	if( !m_model )
 	{
 		VV_WARN("impossible de charger le modèle");
-	}
+	}*/
 	
 	auto cubemap_ptr = std::make_shared<CubemapTexture>(
 		"resources/textures/cubemap_default/px.jpg",

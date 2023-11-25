@@ -66,10 +66,11 @@ void Renderer3D::clear( const Camera &camera )
 
 	// precalculate camera matrices
 	m_camera = camera;
-	m_cam_view = camera.get_view();
-	m_cam_proj = camera.get_projection();
+	m_camera.calculate_view();
+	m_camera.calculate_projection();
+	m_mvp = m_camera.projection * m_camera.view;
 
-	auto skybow_view = glm::mat4(glm::mat3(m_cam_view));
+	auto skybow_view = glm::mat4(glm::mat3(m_camera.view));
 
 	glClear( GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT );
 
@@ -84,7 +85,7 @@ void Renderer3D::clear( const Camera &camera )
 		m_skybox_texture->bind();
 		log_gl_errors();
 		m_skybox_shader.set_mat4("u_view", glm::value_ptr(skybow_view));
-		m_skybox_shader.set_mat4("u_projection", glm::value_ptr(m_cam_proj));
+		m_skybox_shader.set_mat4("u_projection", glm::value_ptr(m_camera.projection));
 		m_skybox_shader.set_int("u_skybox_texture", 0);
 		glActiveTexture(GL_TEXTURE0);
 
@@ -108,10 +109,8 @@ void Renderer3D::render( const Model &model )
 {
 	log_gl_errors();
 
-	auto mvp = m_camera.get_mvp();
-
 	m_mesh_shader.bind();
-	m_mesh_shader.set_mat4("u_mvp", glm::value_ptr(mvp));
+	m_mesh_shader.set_mat4("u_mvp", glm::value_ptr(m_mvp));
 
 	for(auto &mesh: model.m_meshes)
 	{
@@ -141,8 +140,7 @@ void Renderer3D::render( const Model &model )
 void Renderer3D::render( const Mesh &mesh )
 {
 	m_mesh_shader.bind();
-	auto mvp = m_camera.get_mvp();
-	m_mesh_shader.set_mat4("u_mvp", glm::value_ptr(mvp));
+	m_mesh_shader.set_mat4("u_mvp", glm::value_ptr(m_mvp));
 
 	uint32_t spec_count = 1, diff_count = 1;
 	for(uint32_t i = 0; i < mesh.m_textures.size(); ++i )
@@ -167,15 +165,16 @@ void Renderer3D::render( const Mesh &mesh )
 
 void Renderer3D::render( const GrassVolume &grass )
 {
-	auto mvp = m_camera.get_mvp();
 	m_grass_shader.bind();
-	m_grass_shader.set_mat4("u_mvp", glm::value_ptr(mvp));
+	m_grass_shader.set_mat4("u_mvp", glm::value_ptr(m_mvp));
 
 	auto col = grass.m_params.bottom_color;
 
-	glm::vec3 colors[4] = {grass.m_params.bottom_color, grass.m_params.base_color, grass.m_params.top_color, grass.m_params.tip_color};
-
-	m_grass_shader.set_vec3_arr("u_colors[4]", (float*)colors, 4);
+	glm::vec3 colors[4] = {grass.m_params.base_color, grass.m_params.bottom_color, grass.m_params.top_color, grass.m_params.tip_color};
+	for (int i = 0; i < 4; ++i)
+	{
+		m_grass_shader.set_vec3("u_colors[" + std::to_string(i) + "]", colors[i].x, colors[i].y, colors[i].z);
+	}
 
 	grass.m_vertex_array.bind();
 	glDrawElementsInstanced(GL_TRIANGLES, 33, GL_UNSIGNED_INT, 0, grass.m_positions.size());

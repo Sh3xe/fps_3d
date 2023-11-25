@@ -1,18 +1,12 @@
 #include "camera.hpp"
 #include <glm/ext.hpp>
 
-glm::mat4 Camera::get_mvp() const
+void Camera::calculate_view()
 {
-	//TODO: change aspect ratio
-	return glm::perspective(fov, 16.0f/9.0f, near, far) * glm::lookAt(position, center, up);
+	view = glm::lookAt(position, position + direction, up);
 }
 
-glm::mat4 Camera::get_view() const
+void Camera::calculate_projection()
 {
-	return glm::lookAt(position, center, up);
-}
-
-glm::mat4 Camera::get_projection() const
-{
-	return glm::perspective(fov, 16.0f/9.0f, near, far);
+	projection = glm::perspective(fov, aspect_ratio, near, far);
 }
