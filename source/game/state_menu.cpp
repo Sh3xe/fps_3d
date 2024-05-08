@@ -3,7 +3,7 @@
 
 MenuState::MenuState(Application *app):
 	m_renderer(app->window()),
-	m_grass_volume( glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{1.0f, 1.0f}, GrassParameters{} ),
+	m_grass_volume( glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{32.0f, 32.0f}, GrassParameters{} ),
 	State(app)
 {
 }

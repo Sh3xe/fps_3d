@@ -7,11 +7,11 @@
 
 struct GrassParameters
 {
-	uint32_t density = 4;
+	uint32_t density = 100;
 	float max_height = 0.2f;
 	float wind_power = 1.0f;
-	glm::vec3 base_color   { 3.0/255.0  , 59.0/255.0 , 0.0/255.0   };
-	glm::vec3 bottom_color { 14.0/255.0 , 191.0/255.0, 100.0/255.0 };
+	glm::vec3 base_color   { 3.0  /255.0, 59.0 /255.0, 0.0  /255.0 };
+	glm::vec3 bottom_color { 14.0 /255.0, 191.0/255.0, 100.0/255.0 };
 	glm::vec3 top_color    { 142.0/255.0, 218.0/255.0, 136.0/255.0 };
 	glm::vec3 tip_color    { 227.0/255.0, 255.0/255.0, 243.0/255.0 };
 };
