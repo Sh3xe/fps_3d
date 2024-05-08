@@ -6,7 +6,7 @@
 Opt<Settings> load_settings_from_file( const std::string &path )
 {
 	Config cfg { path };
-	if( !cfg )
+	if( !cfg.is_valid() )
 	{
 		VV_ERROR("Cannot load settings at ", path);
 	}

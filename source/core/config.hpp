@@ -8,7 +8,7 @@ class Config
 public:
 	Config( const std::string &path );
 
-	operator bool() const { return m_is_valid; }
+	inline bool is_valid() const { return m_is_valid; }
 
 	float get_float( const std::string &name );
 	bool get_bool( const std::string &name );

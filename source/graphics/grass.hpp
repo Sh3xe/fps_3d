@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include "api/vertex_array.hpp"
 #include <vector>
 #include <glm/glm.hpp>

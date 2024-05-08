@@ -11,6 +11,7 @@ class MenuState: public State
 {
 public:
 	MenuState(Application *app);
+	~MenuState();
 
 	void on_update( float s_dt );
 	void on_create();
@@ -19,7 +20,6 @@ public:
 private:
 	PlayerController m_controller;
 	Renderer3D m_renderer;
-	GrassVolume m_grass_volume;
 	Model m_model;
 	float m_time {0.0f};
 	Camera m_camera;

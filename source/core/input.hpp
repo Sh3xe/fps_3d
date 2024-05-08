@@ -2,7 +2,7 @@
 
 #include "sdl_include.hpp"
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include <string>
 #include <functional>
 #include <map>

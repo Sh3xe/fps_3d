@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include <vector>
 
 enum class LayoutDataType
