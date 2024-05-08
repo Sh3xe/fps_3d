@@ -2,13 +2,17 @@
 #include "game/state_menu.hpp"
 #include "core/logger.hpp"
 
+#include <iostream>
+
 int main()
 {
+	std::cout.sync_with_stdio(false);
+
 	Settings settings = load_settings_from_file("resources/config/settings.txt").value_or( Settings() );
 
 	Application app {settings};
 
-	if( !app )
+	if( !app.is_valid() )
 	{
 		VV_ERROR("Cannot create application");
 		return 1;

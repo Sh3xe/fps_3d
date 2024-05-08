@@ -6,7 +6,7 @@
 Mesh::Mesh(
 	const std::vector<Vertex> &vertices,
 	const std::vector<uint32_t> &indices,
-	const std::vector<Ref<NamedTexture>> textures ):
+	const std::vector<Ref<NamedTexture>> &textures ):
 	m_vertices(vertices),
 	m_indices(indices),
 	m_textures(textures)

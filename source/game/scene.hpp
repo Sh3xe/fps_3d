@@ -3,7 +3,7 @@
 #include <glm/glm.hpp>
 #include <vector>
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include "graphics/model.hpp"
 #include "graphics/api/cubemap_texture.hpp"
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include "api/shader.hpp"
 
 struct StyledRectangle
