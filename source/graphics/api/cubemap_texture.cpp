@@ -24,7 +24,7 @@ CubemapTexture::CubemapTexture(
 	const std::string &back ):
 	CubemapTexture({right, left, top, bottom, front, back})
 {
-} 
+}
 
 bool CubemapTexture::load_from_file( const std::initializer_list<std::string> &paths )
 {

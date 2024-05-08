@@ -13,7 +13,7 @@ Application::Application( const Settings &settings ):
 	m_window(settings.width, settings.height, settings.fullscreen),
 	m_settings(settings)
 {
-	m_valid = static_cast<bool>(m_window);
+	m_valid = m_window.is_valid();
 
 	if(settings.fps == 0)
 	{
@@ -50,7 +50,7 @@ void Application::run()
 	auto previous = std::chrono::system_clock().now();
 	auto current = std::chrono::system_clock().now();
 
-	while( !m_window.should_close() )
+	while( !m_window.should_close() && m_running )
 	{
 		// state initialization
 		if(m_state_require_init)

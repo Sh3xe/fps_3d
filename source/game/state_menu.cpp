@@ -3,11 +3,15 @@
 
 MenuState::MenuState(Application *app):
 	m_renderer(app->window()),
-	m_grass_volume( glm::vec3{0.0f, 0.0f, 0.0f}, glm::vec2{1.0f, 1.0f}, GrassParameters{} ),
 	State(app)
 {
 }
    
+MenuState::~MenuState()
+{
+	
+}
+
 void MenuState::on_update( float s_dt )
 {
 	// controller
@@ -16,8 +20,6 @@ void MenuState::on_update( float s_dt )
 
 	// drawing
 	m_renderer.clear(m_camera);
-	m_renderer.render(m_grass_volume);
-	//m_renderer.render(m_model);
 	m_renderer.finish();
 }
 
@@ -38,7 +40,7 @@ void MenuState::on_create()
 		"resources/textures/cubemap_default/nz.jpg"
 	);
 
-	if( !(*cubemap_ptr) )
+	if( !(cubemap_ptr->is_valid()) )
 	{
 		VV_WARN("cannot load cubemap texture");
 	}

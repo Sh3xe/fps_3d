@@ -12,8 +12,7 @@ public:
 	Window(uint32_t width, uint32_t height, bool fullscreen);
 	~Window();
 	
-	inline bool is_valid() const { return m_valid; }
-
+	inline bool is_valid() const { return m_is_valid; }
 
 	bool should_close() const { return m_should_close; }
 	void poll_events();

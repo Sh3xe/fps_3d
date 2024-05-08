@@ -53,7 +53,7 @@ Renderer3D::Renderer3D(Window &window):
 	m_skybox_vertices.add_vertex_buffer(
 		std::make_shared<VertexBuffer>( (void*)&cube_vertices, sizeof(cube_vertices)),
 		{LayoutDescription(0, 3, 0, 3*4, LayoutDataType::FLOAT)} );
-	m_valid = m_mesh_shader && m_skybox_shader && m_grass_shader;
+	m_valid = m_mesh_shader.is_valid() && m_skybox_shader.is_valid() && m_grass_shader.is_valid();
 }
 
 Renderer3D::~Renderer3D()
