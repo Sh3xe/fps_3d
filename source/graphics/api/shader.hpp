@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include <string>
 
 class Shader
@@ -10,7 +10,7 @@ public:
 	Shader(const std::string &vs_path, const std::string &fs_path);
 	~Shader();
 
-	operator bool() const { return m_valid; }
+	inline bool is_valid() const { return m_valid; }
 
 	Shader(const Shader&) = delete;
 	Shader &operator=(const Shader&) = delete;

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include "core/settings.hpp"
 #include "graphics/window.hpp"
 //#include "graphics/renderer.hpp"
@@ -13,7 +13,7 @@ public:
 	Application(const Settings &settings);
 	~Application();
 
-	operator bool() const { return m_valid; }
+	bool is_valid() const { return m_valid; }
 
 	void run();
 	void set_state( State *state );

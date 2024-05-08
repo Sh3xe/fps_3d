@@ -4,7 +4,7 @@
 #include <assimp/postprocess.h>
 #include <assimp/scene.h>
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 #include "mesh.hpp"
 #include "api/texture2d.hpp"
 
@@ -23,7 +23,7 @@ public:
 
 	bool load_from_file(const std::string &path);
 
-	inline operator bool() const { return m_valid; }
+	inline bool is_valid() const { return m_valid; }
 
 private:
 	void process_node( aiNode *node, const aiScene *scene );

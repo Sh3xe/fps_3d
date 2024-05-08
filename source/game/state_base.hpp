@@ -6,7 +6,7 @@ class State
 {
 public:
 	State( Application *app ): m_app(app) {}
-	~State() {}
+	virtual ~State() {};
 
 	virtual void on_update( float s_dt ) = 0;
 	virtual void on_create() = 0;

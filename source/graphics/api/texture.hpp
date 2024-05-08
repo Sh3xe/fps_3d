@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 
 class Texture {
 public:
@@ -11,7 +11,7 @@ public:
 	virtual void bind() const = 0;
 	virtual void unbind() const = 0;
 
-	operator bool() const { return m_valid; }
+	inline bool is_valid() const { return m_valid; }
 
 protected:
 	uint32_t m_id = 0;

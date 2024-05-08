@@ -8,6 +8,11 @@ MenuState::MenuState(Application *app):
 {
 }
    
+MenuState::~MenuState()
+{
+	
+}
+
 void MenuState::on_update( float s_dt )
 {
 	// controller
@@ -16,8 +21,6 @@ void MenuState::on_update( float s_dt )
 
 	// drawing
 	m_renderer.clear(m_camera);
-	m_renderer.render(m_grass_volume);
-	//m_renderer.render(m_model);
 	m_renderer.finish();
 }
 
@@ -38,7 +41,7 @@ void MenuState::on_create()
 		"resources/textures/cubemap_default/nz.jpg"
 	);
 
-	if( !(*cubemap_ptr) )
+	if( !(cubemap_ptr->is_valid()) )
 	{
 		VV_WARN("cannot load cubemap texture");
 	}

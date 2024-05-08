@@ -1,7 +1,8 @@
 #include "model.hpp"
 #include "core/logger.hpp"
 
-//TODO: add exception ihandling in load_from_file so that I can just throw in process_...()
+//TODO:
+// * add exception handling in load_from_file so that I can just throw in process_...()
 
 Model::Model()
 {
@@ -20,6 +21,7 @@ Model::~Model()
 
 bool Model::load_from_file(const std::string &path)
 {
+	// Create an Assimp "context" to open the file
 	Assimp::Importer importer {};
 
 	importer.ReadFile( std::string{"../"} + path,

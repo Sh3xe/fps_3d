@@ -1,6 +1,6 @@
 #pragma once
 
-#include "vvtypes.hpp"
+#include "defines.hpp"
 
 #include "core/camera.hpp"
 #include "api/shader.hpp"
@@ -24,7 +24,7 @@ public:
 	Renderer3D(Window &window);
 	~Renderer3D();
 
-	inline operator bool() const { return m_valid; }
+	inline bool is_valid() const { return m_valid; }
 
 	void clear( const Camera &camera );
 	void render( const Model &model );
