@@ -23,6 +23,7 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 
 	SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
 	SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
+	SDL_GL_SetAttribute(SDL_GL_STENCIL_SIZE, 8);
 
 	m_window = SDL_CreateWindow(
 		"FPS Data",
@@ -53,7 +54,9 @@ bool Window::initialize(uint32_t width, uint32_t height, bool fullscreen)
 	return true;
 }
 
-Window::Window(uint32_t width, uint32_t height, bool fullscreen)
+Window::Window(uint32_t width, uint32_t height, bool fullscreen):
+	m_width(width),
+	m_height(height)
 {
 	m_valid = initialize(width, height, fullscreen);
 }
@@ -115,6 +118,8 @@ void Window::make_context_current()
 
 void Window::resize( uint32_t width, uint32_t height )
 {
+	m_width = width;
+	m_height = height;
 	glViewport(0, 0, width, height );
 }
 
