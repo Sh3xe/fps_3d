@@ -53,12 +53,17 @@ static uint32_t get_type_size( const LayoutDataType &type )
 	return 0;
 }
 
-IndexBuffer::IndexBuffer( const uint32_t *indices, size_t count )
+IndexBuffer::IndexBuffer(const uint32_t* indices, size_t count):
+	IndexBuffer(indices, count, GL_STATIC_DRAW)
+{
+}
+
+IndexBuffer::IndexBuffer( const uint32_t *indices, size_t count, uint32_t usage )
 {
 	assert(indices != nullptr);
 	glGenBuffers(1, &m_id);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_id);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), (void*)indices, GL_STATIC_DRAW);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, count * sizeof(uint32_t), (void*)indices, usage);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 }
 

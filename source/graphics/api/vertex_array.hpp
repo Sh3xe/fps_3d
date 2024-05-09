@@ -33,7 +33,8 @@ class IndexBuffer
 public:
 	friend class VertexArray;
 
-	IndexBuffer( const uint32_t *indices, size_t count );
+	IndexBuffer(const uint32_t* indices, size_t count);
+	IndexBuffer( const uint32_t *indices, size_t count, uint32_t usage );
 	~IndexBuffer();
 
 	void bind() const;

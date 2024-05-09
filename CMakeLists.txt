@@ -16,6 +16,8 @@ find_package( assimp REQUIRED )
 add_subdirectory(dependencies/GLAD)
 add_subdirectory(dependencies/STB_IMAGE)
 
+target_include_directories(fps_gl PUBLIC ${CMAKE_SOURCE_DIR}/dependencies/FREETYPE/include)
+
 # PROJECT SETUP
 target_link_libraries(fps_gl PUBLIC
 	glad
@@ -24,6 +26,7 @@ target_link_libraries(fps_gl PUBLIC
 	$<TARGET_NAME_IF_EXISTS:SDL2::SDL2main>
     $<IF:$<TARGET_EXISTS:SDL2::SDL2>,SDL2::SDL2,SDL2::SDL2-static>
 	assimp::assimp
+	${CMAKE_SOURCE_DIR}/dependencies/FREETYPE/lib/freetype.lib
 	${OPENGL_LIBRARIES}
 )
 

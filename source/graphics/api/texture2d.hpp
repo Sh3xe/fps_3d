@@ -21,6 +21,8 @@ public:
 
 	bool load_from_file( const std::string &path );
 
+	bool create_from_memory(uint32_t width, uint32_t height, uint32_t format, void* data);
+
 	void bind() const;
 	void unbind() const;
 };

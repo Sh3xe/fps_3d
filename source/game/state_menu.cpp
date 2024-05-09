@@ -55,9 +55,9 @@ void MenuState::on_create()
 		m_renderer.set_skybox( cubemap_ptr );
 	}
 
-	m_rect.background_color = Color(255, 0, 0, 255);
-	m_rect.border_color = Color(0, 255, 0, 255);
-	m_rect.border_size = 30;
+	m_rect.background_color = Color(200, 200, 200, 128);
+	m_rect.border_color = Color(255, 255, 255, 255);
+	m_rect.border_size = 2;
 	m_rect.x = 540;
 	m_rect.y = 260;
 	m_rect.width = 200;
