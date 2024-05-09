@@ -3,6 +3,7 @@
 #include "state_base.hpp"
 #include "graphics/model.hpp"
 #include "graphics/renderer3d.hpp"
+#include "graphics/renderer2d.hpp"
 #include "core/camera.hpp"
 #include "graphics/grass.hpp"
 #include "player_controller.hpp"
@@ -18,8 +19,12 @@ public:
 	void on_shutdown();
 	
 private:
+
+	Renderer2D::StyledRectangle m_rect;
+
 	PlayerController m_controller;
 	Renderer3D m_renderer;
+	Renderer2D m_2d_renderer;
 	Model m_model;
 	float m_time {0.0f};
 	Camera m_camera;
