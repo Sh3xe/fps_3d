@@ -11,7 +11,7 @@ struct Settings
 	bool fullscreen = false;
 	uint32_t fps = 30;
 	float sensitivity = 0.05f;
-	std::string title = "FPS_Data";
+	std::string title = "FPS";
 };
 
 Opt<Settings> load_settings_from_file( const std::string &path );

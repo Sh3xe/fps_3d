@@ -1,7 +1,6 @@
 #include "application.hpp"
 #include "game/state_menu.hpp"
 #include "core/logger.hpp"
-
 #include <iostream>
 
 int main()

@@ -4,10 +4,18 @@
 
 Renderer2D::Renderer2D(Window &window):
 	m_rect_shader("resources/shaders/rectangle.vert.glsl", "resources/shaders/rectangle.frag.glsl"),
+	m_text_shader("resources/shaders/text.vert.glsl", "resources/shaders/text.frag.glsl"),
 	m_window(window)
 {
 	initialize_rect_vertex_array();
-	m_valid = m_rect_shader.is_valid();
+	bool charmap_loaded = initialize_character_map();
+	m_valid = m_rect_shader.is_valid() && charmap_loaded && m_text_shader.is_valid();
+}
+
+Renderer2D::~Renderer2D()
+{
+	glDeleteBuffers(1, &m_text_vbo);
+	glDeleteVertexArrays(1, &m_text_vao);
 }
 
 void Renderer2D::clear()
@@ -24,11 +32,12 @@ void Renderer2D::clear()
 
 void Renderer2D::submit( const StyledRectangle &rect, int z_index )
 {
-	Renderer2D::RenderPacket packet;
-	packet.type = Renderer2D::RenderPacketType::RECTANGLE;
-	packet.z_index = z_index;
-	packet.styled_rectangle = rect;
-	m_render_packets.push_back(packet);
+	m_render_packets.emplace_back(rect, z_index);
+}
+
+void Renderer2D::submit(const Text& text, int z_index)
+{
+	m_render_packets.emplace_back(text, z_index);
 }
 
 void Renderer2D::render_rectangle(const StyledRectangle& rect)
@@ -75,6 +84,24 @@ void Renderer2D::render_rectangle(const StyledRectangle& rect)
 	m_rect_shader.unbind();
 }
 
+void Renderer2D::render_text(const Text& text)
+{
+	m_text_shader.bind();
+
+	m_text_shader.set_vec3("texture_color", text.color.r, text.color.g, text.color.b);
+
+	glActiveTexture(GL_TEXTURE0);
+	glBindVertexArray(m_text_vao);
+
+	for (unsigned char c : text.content)
+	{
+
+	}
+
+	glBindVertexArray(0);
+	glBindTexture(GL_TEXTURE_2D, 0);
+}
+
 void Renderer2D::finish()
 {
 	m_render_packets.sort([&](const Renderer2D::RenderPacket& left, const Renderer2D::RenderPacket& right) -> bool {
@@ -87,6 +114,9 @@ void Renderer2D::finish()
 		{
 		case Renderer2D::RenderPacketType::RECTANGLE:
 			render_rectangle(packet.styled_rectangle);
+			break;
+		case RenderPacketType::TEXT:
+			render_text(packet.text);
 			break;
 		default:
 			assert(false && "packet.type n'est pas une valeure prise en charge");
@@ -120,4 +150,72 @@ void Renderer2D::initialize_rect_vertex_array()
 		LayoutDescription(0, 2, 0, 2*sizeof(float), LayoutDataType::FLOAT)
 		});
 	m_rect_buffer.set_index_buffer(index_buffer);
+}
+
+bool Renderer2D::initialize_character_map()
+{
+	// initializes the freetype library
+	FT_Library freetype_lib;
+	FT_Error err = FT_Init_FreeType(&freetype_lib);
+
+	if (err)
+	{
+		VV_ERROR("Cannot load the freetype library");
+		return false;
+	}
+
+	// load a font
+	FT_Face face;
+	err = FT_New_Face(freetype_lib, "../resources/fonts/cmunrm.ttf", 0, &face);
+
+	if (err)
+	{
+		VV_ERROR("Cannot load the \"../resources/fonts/cmunrm.ttf\"");
+		return false;
+	}
+
+	// store all the necessary characters
+	FT_Set_Pixel_Sizes(face, 0, 32);
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	for (unsigned char c = 0; c < 128; ++c)
+	{
+		err = FT_Load_Char(face, c, FT_LOAD_RENDER);
+
+		if (err)
+		{
+			VV_WARN("Cannot load '", c, "' character");
+		}
+
+		Character current_char;
+		current_char.texture = Ref<Texture2D>(new Texture2D());
+
+		current_char.texture->create_from_memory(
+			face->glyph->bitmap.width,
+			face->glyph->bitmap.rows,
+			GL_RED,
+			(face->glyph->bitmap.buffer)
+		);
+
+		current_char.advance = face->glyph->advance.x;
+		current_char.size.x = face->glyph->bitmap.width;
+		current_char.size.y = face->glyph->bitmap.rows;
+		current_char.bearing.x = face->glyph->bitmap_left;
+		current_char.bearing.y = face->glyph->bitmap_top;
+
+		m_charmap.insert(std::make_pair(c, current_char) );
+	}
+
+	FT_Done_Face(face);
+	FT_Done_FreeType(freetype_lib);
+
+	// create the open objects for the quad
+	glGenVertexArrays(1, &m_text_vao);
+	glGenBuffers(1, &m_text_vbo);
+	glBindVertexArray(m_text_vao);
+	glBindBuffer(GL_ARRAY_BUFFER, m_text_vbo);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6 * 4, nullptr, GL_DYNAMIC_DRAW);
+	glEnableVertexAttribArray(0);
+	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+	glBindVertexArray(0);
 }

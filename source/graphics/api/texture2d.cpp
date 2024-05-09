@@ -44,6 +44,21 @@ bool Texture2D::load_from_file( const std::string &path )
 	return m_valid;
 }
 
+bool Texture2D::create_from_memory(uint32_t width, uint32_t height, uint32_t format, void* data)
+{
+	m_valid = true;
+	bind();
+	glTexImage2D(GL_TEXTURE_2D, 0, format, width, height, 0, format, GL_UNSIGNED_BYTE, data);
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+	log_gl_errors();
+	return m_valid;
+}
+
 void Texture2D::bind() const
 {
 	assert(m_valid);

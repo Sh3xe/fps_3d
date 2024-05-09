@@ -15,7 +15,7 @@ struct Color
 	}
 	Color() = default;
 
-	uint8_t r, g, b, a;
+	uint8_t r = 0, g = 0, b = 0, a = 0;
 };
 
 template <typename T>
