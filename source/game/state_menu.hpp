@@ -19,8 +19,8 @@ public:
 	void on_shutdown();
 	
 private:
-
 	Renderer2D::StyledRectangle m_rect;
+	Renderer2D::Text m_text;
 
 	PlayerController m_controller;
 	Renderer3D m_renderer;

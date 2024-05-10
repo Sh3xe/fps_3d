@@ -24,6 +24,7 @@ void MenuState::on_update( float s_dt )
 	m_renderer.clear(m_camera);
 
 	m_2d_renderer.submit(m_rect, 5);
+	m_2d_renderer.submit(m_text, 0);
 	m_2d_renderer.finish();
 
 	m_renderer.finish();
@@ -62,6 +63,11 @@ void MenuState::on_create()
 	m_rect.y = 260;
 	m_rect.width = 200;
 	m_rect.height = 200;
+
+	m_text.color = Color(255, 255, 0, 255);
+	m_text.content = "Bonjour!!";
+	m_text.position = { 200, 200 };
+	m_text.size = 50;
 }
 
 void MenuState::on_shutdown()

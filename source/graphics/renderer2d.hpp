@@ -32,6 +32,7 @@ public:
 		std::string content;
 		Color color;
 		uint32_t size;
+		glm::ivec2 position;
 	};
 
 	Renderer2D( Window &window );
@@ -48,6 +49,8 @@ public:
 	void finish();
 
 private:
+	constexpr static size_t pixel_height = 64;
+
 	void render_rectangle(const StyledRectangle& rect);
 
 	void render_text(const Text& text);
@@ -92,14 +95,15 @@ private:
 	struct Character
 	{
 		Ref<Texture2D> texture;
-		glm::ivec2 size;
-		glm::ivec2 bearing;
-		uint32_t advance;
+		glm::ivec2 size{ 0,0 };
+		glm::ivec2 bearing{ 0,0 };
+		uint32_t advance{ 0 };
 	};
 
 	bool m_valid = false;
 	Window& m_window;
 	std::list<RenderPacket> m_render_packets;
+	glm::mat4 m_projection;
 
 	Shader m_rect_shader;
 	VertexArray m_rect_buffer;
