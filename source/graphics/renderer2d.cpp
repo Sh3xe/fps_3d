@@ -1,6 +1,8 @@
 #include "renderer2d.hpp"
 #include <glad/glad.h>
 #include <algorithm>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtc/type_ptr.hpp>
 
 Renderer2D::Renderer2D(Window &window):
 	m_rect_shader("resources/shaders/rectangle.vert.glsl", "resources/shaders/rectangle.frag.glsl"),
@@ -26,6 +28,11 @@ void Renderer2D::clear()
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_STENCIL_BUFFER_BIT);
 	m_render_packets.clear();
+	m_projection = glm::ortho(0.0f, (float)m_window.get_width(), 0.0f, (float)m_window.get_height());
+
+	m_text_shader.bind();
+	m_text_shader.set_mat4("projection", glm::value_ptr(m_projection));
+	m_text_shader.unbind();
 
 	FrameBuffer::unbind();
 }
@@ -43,6 +50,9 @@ void Renderer2D::submit(const Text& text, int z_index)
 void Renderer2D::render_rectangle(const StyledRectangle& rect)
 {
 	m_rect_shader.bind();
+
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
 	// converts between pixel coordinates and Normalized Device Coordinates ([-1,1]*[-1,1])
 	float ndc_border_size_x = (2.0f * (float)rect.border_size) / (float)m_window.get_width();
@@ -81,6 +91,7 @@ void Renderer2D::render_rectangle(const StyledRectangle& rect)
 	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, NULL);
 	glEnable(GL_DEPTH_TEST);
 
+	glDisable(GL_BLEND);
 	m_rect_shader.unbind();
 }
 
@@ -89,15 +100,60 @@ void Renderer2D::render_text(const Text& text)
 	m_text_shader.bind();
 
 	m_text_shader.set_vec3("texture_color", text.color.r, text.color.g, text.color.b);
+	m_text_shader.set_int("text", 0);
 
 	glActiveTexture(GL_TEXTURE0);
 	glBindVertexArray(m_text_vao);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+	float current_x = text.position.x;
+	float current_y = text.position.y;
+	float scale = (float)text.size / (float)pixel_height;
 
 	for (unsigned char c : text.content)
 	{
+		// find the graphical data associated with a given char
+		auto char_it = m_charmap.find(c);
+		Character graphic_char;
 
+		if (char_it == m_charmap.end())
+		{
+			VV_WARN("Cannot load the char with id '", (uint32_t)c, "'");
+			graphic_char = m_charmap[(unsigned char)'a'];
+		}
+		else
+		{
+			graphic_char = char_it->second;
+		}
+
+		float xpos = current_x + graphic_char.bearing.x * scale;
+		float ypos = current_y - (graphic_char.size.y - graphic_char.bearing.y) * scale;
+		float width = graphic_char.size.x * scale;
+		float height = graphic_char.size.y * scale;
+
+		// set the texture
+		float vertices[4 * 6] = {
+			xpos      , ypos+height , 0.0f, 0.0f,
+			xpos+width, ypos+height , 1.0f, 0.0f,
+			xpos+width, ypos        , 1.0f, 1.0f,
+			xpos      , ypos+height , 0.0f, 0.0f,
+			xpos+width, ypos        , 1.0f, 1.0f,
+			xpos      , ypos        , 0.0f, 1.0f,
+		};
+
+		graphic_char.texture->bind();
+
+		glBindBuffer(GL_ARRAY_BUFFER, m_text_vbo);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(vertices), vertices);
+		glBindBuffer(GL_ARRAY_BUFFER, 0);
+		
+		// draw the quad
+		glDrawArrays(GL_TRIANGLES, 0, 6);
+		current_x += scale * ((graphic_char.advance) >> 6);
 	}
 
+	glDisable(GL_BLEND);
 	glBindVertexArray(0);
 	glBindTexture(GL_TEXTURE_2D, 0);
 }
@@ -175,7 +231,7 @@ bool Renderer2D::initialize_character_map()
 	}
 
 	// store all the necessary characters
-	FT_Set_Pixel_Sizes(face, 0, 32);
+	FT_Set_Pixel_Sizes(face, 0, pixel_height);
 	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	for (unsigned char c = 0; c < 128; ++c)
 	{
@@ -218,4 +274,6 @@ bool Renderer2D::initialize_character_map()
 	glVertexAttribPointer(0, 4, GL_FLOAT, GL_FALSE, 4 * sizeof(float), 0);
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 	glBindVertexArray(0);
+
+	return true;
 }
