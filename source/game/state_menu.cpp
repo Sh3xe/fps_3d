@@ -36,7 +36,7 @@ void MenuState::on_create()
 	if( !m_model )
 	{
 		VV_WARN("impossible de charger le modèle");
-	}*/
+	}
 	
 	auto cubemap_ptr = std::make_shared<CubemapTexture>(
 		"resources/textures/cubemap_default/px.jpg",
@@ -68,6 +68,17 @@ void MenuState::on_create()
 	m_text.content = "Bonjour!!";
 	m_text.position = { 200, 200 };
 	m_text.size = 50;
+	*/
+
+	m_menu.add_tab("Jeu");
+	m_menu.add_tab("Parametres");
+	m_menu.add_tab("Credits");
+
+	m_menu["Credits"].add_widget(new ui::Text("Bonjour, je m'appelle Arnaud PELISSIER et c'est moi qui ai code ce jeu.."));
+
+	m_menu["Jeu"].add_widget(new ui::Button("Jouer", [&]() {
+		VV_TRACE("Le joueur à appuiyé sur 'jouer'");
+		}));
 }
 
 void MenuState::on_shutdown()
